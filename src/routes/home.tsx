@@ -4,9 +4,21 @@ import {
   Box,
   Button,
   ReviewButton,
-  Title,
   Wrapper,
 } from "../components/auth-components";
+import styled from "styled-components";
+
+const Title = styled.h1`
+  font-size: 60px;
+  font-weight: 1000;
+  margin-bottom: 20px;
+`;
+
+const SubTitle = styled.h1`
+  font-size: 48px;
+  font-weight: 800;
+  margin: 20px;
+`;
 
 export default function Home() {
   const navigate = useNavigate();
@@ -74,7 +86,7 @@ export default function Home() {
       <Title>당신의치과</Title>
       <Button onClick={quotation}>견적서 작성하기</Button>
 
-      <Title>이용 후기</Title>
+      <SubTitle>이용 후기</SubTitle>
       <Button onClick={() => console.log("Go to ReviewBoard")}>전체보기</Button>
 
       <Box>{reviews.map(renderItem)}</Box>

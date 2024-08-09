@@ -13,6 +13,7 @@ import ProtectedRoute from "./components/protected-route";
 import Quotation from "./routes/quotation";
 import Quotes from "./routes/quotes";
 import QuoteDetail from "./routes/quote-detail";
+import MyReaquests from "./routes/my-requests";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <QuoteDetail />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "my-requests",
+        element: (
+          <ProtectedRoute>
+            <MyReaquests />
           </ProtectedRoute>
         ),
       },

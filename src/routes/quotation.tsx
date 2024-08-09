@@ -85,6 +85,7 @@ const Error = styled.span`
   font-weight: 600;
   color: tomato;
   text-align: center;
+  display: block;
 `;
 
 export default function Quotation() {
@@ -148,7 +149,7 @@ export default function Quotation() {
     }
     try {
       setUploading(true);
-      const doc = await addDoc(collection(db, "quotes"), {
+      const doc = await addDoc(collection(db, `users/${user.uid}/quotes`), {
         desiredTreatment,
         createdAt: Date.now(),
         username: user.displayName || "Anonymous",
@@ -157,7 +158,7 @@ export default function Quotation() {
       if (xrayFile) {
         const xrayLocationRef = ref(
           storage,
-          `quotes/${user.uid}-${user.displayName}/xray/${doc.id}`
+          `users/${user.uid}/xray/${doc.id}`
         );
         const xrayResult = await uploadBytes(xrayLocationRef, xrayFile);
         const xrayUrl = await getDownloadURL(xrayResult.ref);
@@ -166,10 +167,7 @@ export default function Quotation() {
         });
       }
       if (ctFile) {
-        const ctLocationRef = ref(
-          storage,
-          `quotes/${user.uid}-${user.displayName}/ct/${doc.id}`
-        );
+        const ctLocationRef = ref(storage, `users/${user.uid}/ct/${doc.id}`);
         const ctResult = await uploadBytes(ctLocationRef, ctFile);
         const ctUrl = await getDownloadURL(ctResult.ref);
         await updateDoc(doc, {
@@ -179,7 +177,7 @@ export default function Quotation() {
       setDesiredTreatment("");
       setXrayFile(null);
       setCtFile(null);
-      navigate("/quotes");
+      navigate("/my-requests");
     } catch (e) {
       if (e instanceof FirebaseError) {
         setError(e.message);
@@ -207,7 +205,7 @@ export default function Quotation() {
           id="xray"
           accept="image/*"
         />
-        {xrayFile ? (
+        {ctFile ? (
           <AttachFileButton1 htmlFor="ct">
             CT X-ray가 등록되었습니다!
           </AttachFileButton1>
