@@ -9,7 +9,7 @@ import { Switcher } from "../components/auth-components";
 
 export interface MyRequest {
   desiredTreatment: string;
-  createdAt: number;
+  createdAt: Date;
   userId: string;
   username: string;
   xray?: string;
@@ -84,7 +84,7 @@ export default function MyReaquests() {
     try {
       setIsLoading(true);
       const requestQuery = query(
-        collection(db, `users/${user?.uid}/quotes`),
+        collection(db, `users/${user?.uid}/requests`),
         orderBy("createdAt", "desc")
       );
       const snapshot = await getDocs(requestQuery);
@@ -93,7 +93,7 @@ export default function MyReaquests() {
           doc.data();
         return {
           desiredTreatment,
-          createdAt,
+          createdAt: new Date(createdAt),
           userId,
           username,
           xray,
@@ -132,7 +132,7 @@ export default function MyReaquests() {
     <RequestBox onClick={onClick} key={request.id}>
       <RequestID>요청 번호: {request.id}</RequestID>
       <RequestDate>
-        요청한 날짜: {timestampToDate(new Date(request.createdAt))}
+        요청한 날짜: {timestampToDate(request.createdAt)}
       </RequestDate>
       <RequestContent>요청 내용: {request.desiredTreatment}</RequestContent>
     </RequestBox>

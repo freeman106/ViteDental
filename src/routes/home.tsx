@@ -1,12 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import {
-  Box,
-  Button,
-  ReviewButton,
-  Wrapper,
-} from "../components/auth-components";
+import { auth, db } from "../firebase";
+import { Box, Button, Wrapper } from "../components/auth-components";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
+import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import { FirebaseError } from "firebase/app";
+import { Review } from "./review-board";
 
 const Title = styled.h1`
   font-size: 60px;
@@ -14,14 +13,107 @@ const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
+const ReviewButton = styled.div`
+  border-radius: 20px;
+  font-size: 20px;
+  background-color: white;
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  color: black;
+`;
+
 const SubTitle = styled.h1`
-  font-size: 48px;
+  font-size: 44px;
   font-weight: 800;
   margin: 20px;
 `;
 
+const Loading = styled.span`
+  font-size: 24px;
+`;
+
+const ReviewRow = styled.span`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ReviewName = styled.h2`
+  font-size: 30px;
+  font-weight: 1000;
+`;
+
+const ReviewRating = styled.span`
+  font-size: 25px;
+  margin-left: auto;
+  margin-right: 10px;
+`;
+
+const ReviewContent = styled.span`
+  font-size: 22px;
+`;
+
+const Error = styled.span`
+  font-weight: 600;
+  color: tomato;
+  text-align: center;
+  display: block;
+`;
+
 export default function Home() {
   const navigate = useNavigate();
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchReviews = async () => {
+    try {
+      const reviewsQuery = query(
+        collection(db, "reviews"),
+        orderBy("createdAt", "desc"),
+        limit(3)
+      );
+      const snapshot = await getDocs(reviewsQuery);
+      const reviewsData = snapshot.docs.map((doc) => {
+        const {
+          userId,
+          username,
+          title,
+          rating,
+          content,
+          createdAt,
+          updatedAt,
+          reviewId,
+          photo,
+        } = doc.data();
+        return {
+          id: doc.id,
+          userId,
+          username,
+          title,
+          rating,
+          content,
+          updatedAt: new Date(updatedAt),
+          createdAt: new Date(createdAt),
+          reviewId,
+          photo,
+        };
+      });
+      setReviews(reviewsData);
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        setError(e.message);
+        console.log(e.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
   const logOut = async () => {
     await auth.signOut();
     window.location.reload();
@@ -43,41 +135,26 @@ export default function Home() {
     navigate("/quotation");
   };
 
-  interface Review {
-    id: string;
-    user: string;
-    review: string;
-    details: string;
-  }
+  const reviewBoard = () => {
+    navigate("/review-board");
+  };
 
-  const reviews = [
-    {
-      id: "1",
-      user: "User1",
-      review: "너무 친절하고 좋았어요!",
-      details: "치료과정도 상세히 설명해주셨고, 모든 스텝분들이 친절했습니다.",
-    },
-    {
-      id: "2",
-      user: "User2",
-      review: "치료 결과에 매우 만족합니다.",
-      details: "치료 후에 경과도 좋고, 재방문 의사가 있습니다.",
-    },
-    {
-      id: "3",
-      user: "User3",
-      review: "가격도 적당하고 시설도 깨끗해요.",
-      details: "시설이 매우 깨끗하고 청결합니다. 가격도 합리적입니다.",
-    },
-  ];
+  const findClinic = () => {
+    console.log("GO to map API");
+  };
 
-  const renderItem = (item: Review) => (
+  const renderItem = (review: Review) => (
     <ReviewButton
-      key={item.id}
-      onClick={() => console.log("Go to ReviewDetails", { review: item })}
+      key={review.reviewId}
+      onClick={() =>
+        navigate(`/review/${review.reviewId}`, { state: { review } })
+      }
     >
-      <p>{item.user}</p>
-      <p>{item.review}</p>
+      <ReviewRow>
+        <ReviewName>{review.username}</ReviewName>
+        <ReviewRating>별점:{review.rating}</ReviewRating>
+      </ReviewRow>
+      <ReviewContent>{review.title}</ReviewContent>
     </ReviewButton>
   );
 
@@ -87,9 +164,12 @@ export default function Home() {
       <Button onClick={quotation}>견적서 작성하기</Button>
 
       <SubTitle>이용 후기</SubTitle>
-      <Button onClick={() => console.log("Go to ReviewBoard")}>전체보기</Button>
+      <Button onClick={reviewBoard}>전체보기</Button>
 
-      <Box>{reviews.map(renderItem)}</Box>
+      {isLoading ? <Loading></Loading> : <Box>{reviews.map(renderItem)}</Box>}
+      {error !== "" ? <Error>{error}</Error> : null}
+
+      <Button onClick={findClinic}>내 주변 치과 찾기</Button>
 
       {auth.currentUser !== null ? (
         <>

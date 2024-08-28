@@ -10,10 +10,13 @@ import reset from "styled-reset";
 import LoadingScreen from "./components/loading-screen";
 import { auth } from "./firebase";
 import ProtectedRoute from "./components/protected-route";
-import Quotation from "./routes/quotation";
 import Quotes from "./routes/quotes";
 import QuoteDetail from "./routes/quote-detail";
 import MyReaquests from "./routes/my-requests";
+import Request from "./routes/request";
+import ReviewBoard from "./routes/review-board";
+import WriteReview from "./routes/write-review";
+import ReviewDetail from "./routes/review-detail";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +39,7 @@ const router = createBrowserRouter([
         path: "quotation",
         element: (
           <ProtectedRoute>
-            <Quotation />
+            <Request />
           </ProtectedRoute>
         ),
       },
@@ -64,6 +67,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "write-review",
+        element: (
+          <ProtectedRoute>
+            <WriteReview />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
@@ -73,6 +84,18 @@ const router = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
+  },
+  {
+    path: "/review-board",
+    element: <ReviewBoard />,
+  },
+  {
+    path: "review/:id",
+    element: (
+      <ProtectedRoute>
+        <ReviewDetail />
+      </ProtectedRoute>
+    ),
   },
 ]);
 
