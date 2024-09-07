@@ -129,7 +129,7 @@ const CheckBoxText = styled.span`
 `;
 
 const DiseaseContainer = styled.div`
-  width: 25%;
+  width: 100%;
 `;
 
 const EtcContainer = styled.div`
@@ -212,6 +212,7 @@ export default function Request() {
   const [cancer, setCancer] = useState(false);
   const [etcCheck, setEtcCheck] = useState(false);
   const [etc, setEtc] = useState("");
+  const [desiredEtc, setDesiredEtc] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const onDesiredTreatmentClicked = (
@@ -632,12 +633,68 @@ export default function Request() {
           원하는 치료 입력하기
         </Button>
         {isDesiredTreatmentClicked ? (
-          <TextArea
-            onChange={onDesiredTreatmentChange}
-            value={desiredTreatment}
-            placeholder="원하는 치료를 입력해주세요"
-          />
+          <Wrapper>
+            <Options>
+              <OptionRow>
+                <DiseaseContainer>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={allergyCheck === true ? true : false}
+                    onChange={() => setAllergyCheck(true)}
+                  />
+                  <DiseaseCheckBoxText>임플란트</DiseaseCheckBoxText>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={allergyCheck === true ? true : false}
+                    onChange={() => setAllergyCheck(true)}
+                  />
+                  <DiseaseCheckBoxText>치아미백</DiseaseCheckBoxText>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={allergyCheck === true ? true : false}
+                    onChange={() => setAllergyCheck(true)}
+                  />
+                  <DiseaseCheckBoxText>교정</DiseaseCheckBoxText>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={allergyCheck === true ? true : false}
+                    onChange={() => setAllergyCheck(true)}
+                  />
+                  <DiseaseCheckBoxText>턱관절</DiseaseCheckBoxText>
+                </DiseaseContainer>
+              </OptionRow>
+              <OptionRow>
+                <DiseaseContainer>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={allergyCheck === true ? true : false}
+                    onChange={() => setAllergyCheck(true)}
+                  />
+                  <DiseaseCheckBoxText>라미네이트</DiseaseCheckBoxText>
+                  <DiseaseCheckBox
+                    type="checkbox"
+                    checked={desiredEtc === true ? true : false}
+                    onChange={() => setDesiredEtc(!desiredEtc)}
+                  />
+                  <DiseaseCheckBoxText>기타</DiseaseCheckBoxText>
+                </DiseaseContainer>
+              </OptionRow>
+              {desiredEtc ? (
+                <TextArea
+                  onChange={onDesiredTreatmentChange}
+                  value={desiredTreatment}
+                  placeholder="기타"
+                />
+              ) : null}
+            </Options>
+            <TextArea
+              onChange={onDesiredTreatmentChange}
+              value={desiredTreatment}
+              placeholder="원하는 치료를 입력해주세요"
+            />
+          </Wrapper>
         ) : null}
+
         <SubmitBtn
           type="submit"
           value={uploading ? "업로드 중..." : "견적 받기"}

@@ -7,10 +7,18 @@ import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { FirebaseError } from "firebase/app";
 import { Review } from "./review-board";
 
+const Background = styled.div`
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+`;
+
 const Title = styled.h1`
   font-size: 60px;
   font-weight: 1000;
   margin-bottom: 20px;
+  color: black;
 `;
 
 const ReviewButton = styled.div`
@@ -22,12 +30,14 @@ const ReviewButton = styled.div`
   border: none;
   cursor: pointer;
   color: black;
+  background-color: #c7c7c7;
 `;
 
 const SubTitle = styled.h1`
   font-size: 44px;
   font-weight: 800;
   margin: 20px;
+  color: black;
 `;
 
 const Loading = styled.span`
@@ -72,7 +82,7 @@ export default function Home() {
       const reviewsQuery = query(
         collection(db, "reviews"),
         orderBy("createdAt", "desc"),
-        limit(3)
+        limit(4)
       );
       const snapshot = await getDocs(reviewsQuery);
       const reviewsData = snapshot.docs.map((doc) => {
@@ -124,7 +134,7 @@ export default function Home() {
   };
 
   const signIn = () => {
-    navigate("/create-account");
+    navigate("/client-hospital");
   };
 
   const profile = () => {
@@ -159,29 +169,31 @@ export default function Home() {
   );
 
   return (
-    <Wrapper>
-      <Title>당신의치과</Title>
-      <Button onClick={quotation}>견적서 작성하기</Button>
+    <Background>
+      <Wrapper>
+        <Title>당신의치과</Title>
+        <Button onClick={quotation}>견적서 작성하기</Button>
 
-      <SubTitle>이용 후기</SubTitle>
-      <Button onClick={reviewBoard}>전체보기</Button>
+        <SubTitle>이용 후기</SubTitle>
+        <Button onClick={reviewBoard}>전체보기</Button>
 
-      {isLoading ? <Loading></Loading> : <Box>{reviews.map(renderItem)}</Box>}
-      {error !== "" ? <Error>{error}</Error> : null}
+        {isLoading ? <Loading></Loading> : <Box>{reviews.map(renderItem)}</Box>}
+        {error !== "" ? <Error>{error}</Error> : null}
 
-      <Button onClick={findClinic}>내 주변 치과 찾기</Button>
+        <Button onClick={findClinic}>내 주변 치과 찾기</Button>
 
-      {auth.currentUser !== null ? (
-        <>
-          <Button onClick={profile}>마이페이지</Button>
-          <Button onClick={logOut}>로그아웃</Button>
-        </>
-      ) : (
-        <>
-          <Button onClick={logIn}>로그인</Button>
-          <Button onClick={signIn}>회원가입</Button>
-        </>
-      )}
-    </Wrapper>
+        {auth.currentUser !== null ? (
+          <>
+            <Button onClick={profile}>마이페이지</Button>
+            <Button onClick={logOut}>로그아웃</Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={logIn}>로그인</Button>
+            <Button onClick={signIn}>회원가입</Button>
+          </>
+        )}
+      </Wrapper>
+    </Background>
   );
 }

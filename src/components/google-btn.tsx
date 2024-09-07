@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom";
 
 const Button = styled.span`
   margin-top: 30px;
-  background-color: white;
   font-weight: 500;
   width: 100%;
-  color: black;
+  color: white;
   padding: 10px 20px;
   border-radius: 50px;
   border: 0;
@@ -16,6 +15,7 @@ const Button = styled.span`
   gap: 5px;
   align-items: center;
   justify-content: center;
+  background-color: black;
   cursor: pointer;
 `;
 

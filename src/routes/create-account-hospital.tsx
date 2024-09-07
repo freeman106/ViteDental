@@ -25,7 +25,24 @@ const Background = styled.div`
   justify-content: center;
 `;
 
-export default function CreateAccount() {
+const AttachFileButton0 = styled.label`
+  padding: 10px 20px;
+  margin: 10px;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 50px;
+  border: none;
+  width: 100%;
+  font-size: 16px;
+  cursor: pointer;
+`;
+
+const AttachFileInput = styled.input`
+  display: none;
+`;
+
+export default function CreateAccountHospital() {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [name, setName] = useState("");
@@ -76,7 +93,7 @@ export default function CreateAccount() {
             onChange={onChange}
             name="name"
             value={name}
-            placeholder="이름"
+            placeholder="병원이름"
             type="text"
             required
           />
@@ -84,7 +101,7 @@ export default function CreateAccount() {
             onChange={onChange}
             name="name"
             value={name}
-            placeholder="생년월일"
+            placeholder="대표자이름"
             type="text"
             required
           />
@@ -92,7 +109,7 @@ export default function CreateAccount() {
             onChange={onChange}
             name="name"
             value={name}
-            placeholder="닉네임"
+            placeholder="전화번호"
             type="text"
             required
           />
@@ -119,6 +136,17 @@ export default function CreateAccount() {
             placeholder="지역"
             type="text"
             required
+          />
+          <AttachFileButton0 htmlFor="xray">
+            면허증이나 사업자등록증 사진
+          </AttachFileButton0>
+          <AttachFileInput
+            onChange={() => {
+              console.log("파일처리");
+            }}
+            type="file"
+            id="xray"
+            accept="image/*"
           />
 
           <Input type="submit" value={isLoading ? "로딩중..." : "회원가입"} />

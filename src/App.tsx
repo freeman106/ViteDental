@@ -17,6 +17,10 @@ import Request from "./routes/request";
 import ReviewBoard from "./routes/review-board";
 import WriteReview from "./routes/write-review";
 import ReviewDetail from "./routes/review-detail";
+import ClientHospital from "./routes/client-hospital";
+import CreateAccountHospital from "./routes/create-account-hospital";
+import HomeHospital from "./routes/home-hospital";
+import ProfileHospital from "./routes/profile-hospital";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +79,22 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "home-hospital",
+        element: (
+          <ProtectedRoute>
+            <HomeHospital />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile-hospital",
+        element: (
+          <ProtectedRoute>
+            <ProfileHospital />
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
@@ -84,6 +104,14 @@ const router = createBrowserRouter([
   {
     path: "/create-account",
     element: <CreateAccount />,
+  },
+  {
+    path: "client-hospital",
+    element: <ClientHospital />,
+  },
+  {
+    path: "/create-account-hospital",
+    element: <CreateAccountHospital />,
   },
   {
     path: "/review-board",

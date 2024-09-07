@@ -2,6 +2,13 @@ import styled from "styled-components";
 import { Wrapper } from "../components/auth-components";
 import { useNavigate } from "react-router-dom";
 
+const Background = styled.div`
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+`;
+
 const Top = styled.h1`
   display: flex;
   text-align: center;
@@ -9,13 +16,19 @@ const Top = styled.h1`
   font-size: 50px;
   margin: 20px;
   font-weight: 1000;
+  color: black;
+`;
+
+const Select = styled.select`
+  margin-left: auto;
+  font-size: 20px;
 `;
 
 const QuoteBox = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: white;
-  color: black;
+  background-color: black;
+  color: white;
   border-radius: 20px;
   margin: 10px;
   padding: 10px 20px;
@@ -104,9 +117,15 @@ export default function Quotes() {
     </QuoteBox>
   );
   return (
-    <Wrapper>
-      <Top>내가 받은 견적들</Top>
-      {quotes.map(renderItem)}
-    </Wrapper>
+    <Background>
+      <Wrapper>
+        <Top>내가 받은 견적들</Top>
+        <Select>
+          <option>시간순</option>
+          <option>거리순</option>
+        </Select>
+        {quotes.map(renderItem)}
+      </Wrapper>
+    </Background>
   );
 }

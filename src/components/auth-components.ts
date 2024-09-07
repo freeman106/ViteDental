@@ -7,11 +7,13 @@ export const Wrapper = styled.div`
   align-items: center;
   width: 420px;
   padding: 50px 0px;
+  background-color: white;
 `;
 
 export const Title = styled.h1`
   font-size: 42px;
   margin-bottom: 20px;
+  color: black;
 `;
 
 export const Button = styled.button`
@@ -22,6 +24,8 @@ export const Button = styled.button`
   width: 100%;
   font-size: 16px;
   cursor: pointer;
+  background-color: black;
+  color: white;
 `;
 
 export const ReviewButton = styled.button`
@@ -57,6 +61,8 @@ export const Input = styled.input`
   border: none;
   width: 100%;
   font-size: 16px;
+  background-color: black;
+  color: white;
   &[type="submit"] {
     cursor: pointer;
     &:hover {
@@ -71,6 +77,7 @@ export const Error = styled.span`
 `;
 
 export const Switcher = styled.span`
+  color: black;
   margin-top: 20px;
   a {
     color: #1d9bf0;

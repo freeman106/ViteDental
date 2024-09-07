@@ -74,7 +74,7 @@ export default function Login() {
       {error !== "" ? <Error>{error}</Error> : null}
       <Switcher>
         계정이 없으신가요?{" "}
-        <Link to="/create-account">계정을 만들어보세요!</Link>
+        <Link to="/client-hospital">계정을 만들어보세요!</Link>
       </Switcher>
       <GoogleButton />
     </Wrapper>
